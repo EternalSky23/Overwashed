@@ -93,8 +93,8 @@ public class GameBootstrap : MonoBehaviour
             cam.tag = "MainCamera";
         }
         cam.orthographic = true;
-        cam.orthographicSize = 6.4f;
-        cam.transform.position = new Vector3(0f, 0.4f, -10f);
+        // size / position are computed so the shop fits between the HUD bands at any aspect ratio
+        if (cam.GetComponent<CameraFit>() == null) cam.gameObject.AddComponent<CameraFit>();
         cam.backgroundColor = new Color(0.12f, 0.1f, 0.16f);
         cam.clearFlags = CameraClearFlags.SolidColor;
     }
@@ -166,16 +166,16 @@ public class GameBootstrap : MonoBehaviour
     private void BuildStations()
     {
         // ---- top row (against the wall) ----
-        WasherA = NewMachine("Washer", "washer", MachineKind.Washer, washerTime, new Vector2(-7.6f, 2.5f));
-        WasherB = NewMachine("Washer", "washer", MachineKind.Washer, washerTime, new Vector2(-5.8f, 2.5f));
-        Dryer = NewMachine("Dryer", "dryer", MachineKind.Dryer, dryerTime, new Vector2(-4.0f, 2.5f));
-        DryCleaner = NewMachine("Dry Cleaner", "drycleaner", MachineKind.DryCleaner, dryCleanTime, new Vector2(-2.2f, 2.5f));
+        WasherA = NewMachine("Washer", "washer", MachineKind.Washer, washerTime, new Vector2(-7.4f, 2.5f));
+        WasherB = NewMachine("Washer", "washer", MachineKind.Washer, washerTime, new Vector2(-5.4f, 2.5f));
+        Dryer = NewMachine("Dryer", "dryer", MachineKind.Dryer, dryerTime, new Vector2(-3.4f, 2.5f));
+        DryCleaner = NewMachine("Dry Cleaner", "drycleaner", MachineKind.DryCleaner, dryCleanTime, new Vector2(-1.4f, 2.5f));
 
-        HandWash = NewStation<HandWashStation>("HandWash", new Vector2(0.2f, 2.5f));
+        HandWash = NewStation<HandWashStation>("HandWash", new Vector2(0.9f, 2.5f));
         HandWash.Setup("Hand Wash", "handwash", new Vector2(1.5f, 1.4f));
         HandWash.Init();
 
-        Rack = NewStation<DryingRackStation>("DryingRack", new Vector2(3.0f, 2.6f));
+        Rack = NewStation<DryingRackStation>("DryingRack", new Vector2(3.8f, 2.6f));
         Rack.Setup("Drying Rack", "rack", new Vector2(2.6f, 1.2f));
         Rack.Init(airDryTime);
 
@@ -193,7 +193,7 @@ public class GameBootstrap : MonoBehaviour
         FoldTable.Init(ProcessStep.Fold, foldTime);
 
         // ---- left: counter ----
-        Counter = NewStation<CounterStation>("Counter", new Vector2(-9.2f, -0.6f));
+        Counter = NewStation<CounterStation>("Counter", new Vector2(-9.2f, -0.9f));
         Counter.Setup("Counter", "counter", new Vector2(1.3f, 4.3f));
         Counter.Init(4, 1.0f);
 

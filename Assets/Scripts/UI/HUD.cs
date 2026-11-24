@@ -11,6 +11,12 @@ public class HUD : MonoBehaviour
 {
     public static HUD Instance { get; private set; }
 
+    /// <summary>Height (reference pixels, 1920x1080) taken by the top HUD band / bottom controls bar.
+    /// CameraFit keeps the shop between them.</summary>
+    public const float TopBand = 172f;
+    public const float BottomBand = 54f;
+    public Canvas Canvas { get; private set; }
+
     public static readonly Color Good = new Color(0.45f, 0.95f, 0.5f);
     public static readonly Color Bad = new Color(1f, 0.42f, 0.38f);
     public static readonly Color Warn = new Color(1f, 0.8f, 0.35f);
@@ -57,44 +63,45 @@ public class HUD : MonoBehaviour
     {
         Instance = this;
         var canvas = UIFactory.CreateCanvas("HUD Canvas", 10);
+        Canvas = canvas;
         var root = canvas.transform;
 
         // ---- Top-left stats ----
         var statPanel = UIFactory.Panel(root, "Stats", new Color(0.1f, 0.08f, 0.14f, 0.85f),
-            new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(16, -14), new Vector2(300, 190));
-        timeText = UIFactory.Label(statPanel.transform, "Time", "10:00", 56, Color.white, TextAnchor.MiddleLeft,
-            new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, 1), new Vector2(20, -8), new Vector2(-20, 70));
-        cashText = UIFactory.Label(statPanel.transform, "Cash", "$1000", 38, new Color(1f, 0.9f, 0.4f), TextAnchor.MiddleLeft,
-            new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, 1), new Vector2(20, -80), new Vector2(-20, 48));
-        scoreText = UIFactory.Label(statPanel.transform, "Score", "Score 0", 32, Info, TextAnchor.MiddleLeft,
-            new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, 1), new Vector2(20, -130), new Vector2(-20, 44));
+            new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(12, -12), new Vector2(290, 148));
+        timeText = UIFactory.Label(statPanel.transform, "Time", "10:00", 50, Color.white, TextAnchor.MiddleLeft,
+            new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, 1), new Vector2(18, -4), new Vector2(-18, 60));
+        cashText = UIFactory.Label(statPanel.transform, "Cash", "$1000", 32, new Color(1f, 0.9f, 0.4f), TextAnchor.MiddleLeft,
+            new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, 1), new Vector2(18, -64), new Vector2(-18, 40));
+        scoreText = UIFactory.Label(statPanel.transform, "Score", "Score 0", 26, Info, TextAnchor.MiddleLeft,
+            new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, 1), new Vector2(18, -104), new Vector2(-18, 36));
 
         // ---- Top-right stats ----
         var rightPanel = UIFactory.Panel(root, "RightStats", new Color(0.1f, 0.08f, 0.14f, 0.85f),
-            new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-16, -14), new Vector2(250, 190));
-        statsText = UIFactory.Label(rightPanel.transform, "Stats", "", 28, Color.white, TextAnchor.UpperLeft,
+            new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-12, -12), new Vector2(240, 148));
+        statsText = UIFactory.Label(rightPanel.transform, "Stats", "", 26, Color.white, TextAnchor.UpperLeft,
             Vector2.zero, Vector2.one, new Vector2(0.5f, 0.5f), new Vector2(8, -6), new Vector2(-30, -24));
 
         // ---- Order cards ----
-        float cardW = 300, cardH = 190, gap = 14;
+        float cardW = 300, cardH = 148, gap = 14;
         float totalW = MaxCards * cardW + (MaxCards - 1) * gap;
         for (int i = 0; i < MaxCards; i++)
         {
             float x = -totalW / 2 + cardW / 2 + i * (cardW + gap);
             var bg = UIFactory.Panel(root, "Order" + i, new Color(0.97f, 0.95f, 0.88f, 0.95f),
-                new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(x, -14), new Vector2(cardW, cardH));
+                new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(x, -12), new Vector2(cardW, cardH));
             var card = new Card { Bg = bg };
             card.Icon = UIFactory.Panel(bg.transform, "Icon", Color.white, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1),
-                new Vector2(10, -10), new Vector2(64, 64));
+                new Vector2(10, -8), new Vector2(50, 50));
             card.Icon.preserveAspect = true;
-            card.Title = UIFactory.Label(bg.transform, "Title", "", 32, new Color(0.15f, 0.12f, 0.2f), TextAnchor.MiddleLeft,
-                new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, 1), new Vector2(84, -10), new Vector2(-94, 64));
+            card.Title = UIFactory.Label(bg.transform, "Title", "", 28, new Color(0.15f, 0.12f, 0.2f), TextAnchor.MiddleLeft,
+                new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, 1), new Vector2(68, -8), new Vector2(-78, 50));
             card.Title.GetComponent<Shadow>().enabled = false;
-            card.Steps = UIFactory.Label(bg.transform, "Steps", "", 24, new Color(0.3f, 0.3f, 0.35f), TextAnchor.UpperLeft,
-                new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, 1), new Vector2(12, -80), new Vector2(-24, 80));
+            card.Steps = UIFactory.Label(bg.transform, "Steps", "", 21, new Color(0.3f, 0.3f, 0.35f), TextAnchor.UpperLeft,
+                new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, 1), new Vector2(12, -62), new Vector2(-24, 56));
             card.Steps.GetComponent<Shadow>().enabled = false;
             var timeBg = UIFactory.Panel(bg.transform, "TimeBg", new Color(0.2f, 0.2f, 0.25f), new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 0),
-                new Vector2(10, 10), new Vector2(-20, 16));
+                new Vector2(10, 8), new Vector2(-20, 12));
             card.TimeFillImg = UIFactory.Panel(timeBg.transform, "Fill", Good, new Vector2(0, 0), new Vector2(1, 1), new Vector2(0, 0.5f),
                 Vector2.zero, Vector2.zero);
             card.TimeFill = card.TimeFillImg.rectTransform;
@@ -103,14 +110,14 @@ public class HUD : MonoBehaviour
         }
 
         // ---- Toasts ----
-        toastRoot = UIFactory.Rect(root, "Toasts", new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 62), new Vector2(1300, 200));
+        toastRoot = UIFactory.Rect(root, "Toasts", new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 58), new Vector2(1300, 200));
 
         // ---- Controls hint ----
         var hintBg = UIFactory.Panel(root, "Controls", new Color(0f, 0f, 0f, 0.55f), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0),
-            new Vector2(0, 8), new Vector2(1500, 44));
+            new Vector2(0, 6), new Vector2(1500, 40));
         UIFactory.Label(hintBg.transform, "Text",
             "Move: WASD / Arrows     Space: Pick up / Put down / Use     E or Left Click: Work (hold / mash)     Esc: Pause",
-            24, Color.white, TextAnchor.MiddleCenter, Vector2.zero, Vector2.one, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.zero);
+            22, Color.white, TextAnchor.MiddleCenter, Vector2.zero, Vector2.one, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.zero);
 
         BuildPausePanel(root);
         BuildResultPanel(root);
