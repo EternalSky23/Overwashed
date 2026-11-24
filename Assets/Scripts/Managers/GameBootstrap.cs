@@ -20,7 +20,7 @@ public class GameBootstrap : MonoBehaviour
     [Tooltip("Use downloaded pixel art from Assets/ThirdParty/Resources/Art when it exists.")]
     [SerializeField] private bool useThirdPartyArt = true;
     [Tooltip("Townsfolk character used for the player (Baker, Waiter, Woman, Teen, ...).")]
-    [SerializeField] private string playerCharacter = "Baker";
+    [SerializeField] private string playerCharacter = "Teen";
 
     [Header("Tutorial")]
     [Tooltip("Show the tutorial at every round start (otherwise only the first time).")]
