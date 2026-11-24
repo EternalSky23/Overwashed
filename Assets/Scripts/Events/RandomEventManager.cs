@@ -20,6 +20,9 @@ public class RandomEventManager : MonoBehaviour
     private float nextKit;
     private readonly List<UpgradeKit> floorKits = new List<UpgradeKit>();
 
+    /// <summary>Turn off automatic events (used by the scripted playtest).</summary>
+    public bool AutoEvents { get; set; } = true;
+
     public void Init(Vector2 door, Vector2[] kitPoints, List<Station> allStations)
     {
         Instance = this;
@@ -37,7 +40,7 @@ public class RandomEventManager : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance == null || !GameManager.Instance.IsRunning) return;
+        if (GameManager.Instance == null || !GameManager.Instance.IsRunning || !AutoEvents) return;
 
         nextKid -= Time.deltaTime;
         if (nextKid <= 0f)

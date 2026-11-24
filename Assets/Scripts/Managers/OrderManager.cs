@@ -28,6 +28,9 @@ public class OrderManager : MonoBehaviour
 
     public readonly List<Order> ActiveOrders = new List<Order>();
 
+    /// <summary>Turn off automatic orders (used by the scripted playtest).</summary>
+    public bool AutoSpawn { get; set; } = true;
+
     private CounterStation counter;
     private float nextSpawn = 1.5f;
     private int spawnedCount;
@@ -49,7 +52,7 @@ public class OrderManager : MonoBehaviour
         if (GameManager.Instance == null || !GameManager.Instance.IsRunning) return;
 
         nextSpawn -= Time.deltaTime;
-        if (nextSpawn <= 0f && ActiveOrders.Count < maxOrders && counter.HasFreeSlot())
+        if (AutoSpawn && nextSpawn <= 0f && ActiveOrders.Count < maxOrders && counter.HasFreeSlot())
         {
             SpawnOrder();
             // the second order comes a bit faster so the start is not boring

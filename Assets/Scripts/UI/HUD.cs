@@ -223,7 +223,11 @@ public class HUD : MonoBehaviour
     {
         var t = UIFactory.Label(toastRoot, "Toast", message, 30, color, TextAnchor.MiddleCenter,
             new Vector2(0, 0), new Vector2(1, 0), new Vector2(0.5f, 0), Vector2.zero, new Vector2(0, 40));
+        var outline = t.gameObject.AddComponent<Outline>();
+        outline.effectColor = new Color(0f, 0f, 0f, 0.95f);
+        outline.effectDistance = new Vector2(2.5f, -2.5f);
         toasts.Insert(0, new Toasty { Text = t, Life = 3.2f });
+        UpdateToasts();
         while (toasts.Count > 4)
         {
             Destroy(toasts[toasts.Count - 1].Text.gameObject);

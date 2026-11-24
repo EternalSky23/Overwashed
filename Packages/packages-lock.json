@@ -17,10 +17,10 @@
       "depth": 2,
       "source": "registry",
       "dependencies": {
-        "com.unity.burst": "1.5.1",
         "com.unity.2d.sprite": "1.0.0",
         "com.unity.mathematics": "1.1.0",
-        "com.unity.modules.uielements": "1.0.0"
+        "com.unity.modules.uielements": "1.0.0",
+        "com.unity.burst": "1.5.1"
       },
       "url": "https://packages.unity.com"
     },
@@ -82,15 +82,6 @@
         "com.unity.2d.tilemap": "1.0.0",
         "com.unity.modules.tilemap": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.ads": {
-      "version": "3.7.5",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.ugui": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },

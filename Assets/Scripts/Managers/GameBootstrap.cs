@@ -70,6 +70,7 @@ public class GameBootstrap : MonoBehaviour
 
         var debug = gameObject.AddComponent<DebugTools>(); // cheat keys F1-F4 in development builds
         if (DebugTools.HasArg("-autoshot")) debug.StartGameShots(this);
+        if (DebugTools.HasArg("-playtest")) debug.StartPlaytest(this);
     }
 
     private void SetupCamera()
@@ -81,8 +82,8 @@ public class GameBootstrap : MonoBehaviour
             cam.tag = "MainCamera";
         }
         cam.orthographic = true;
-        cam.orthographicSize = 6.2f;
-        cam.transform.position = new Vector3(0f, 0.6f, -10f);
+        cam.orthographicSize = 6.4f;
+        cam.transform.position = new Vector3(0f, 0.4f, -10f);
         cam.backgroundColor = new Color(0.12f, 0.1f, 0.16f);
         cam.clearFlags = CameraClearFlags.SolidColor;
     }
@@ -118,7 +119,7 @@ public class GameBootstrap : MonoBehaviour
         door.transform.position = doorPosition;
         door.transform.localScale = new Vector3(1.8f, 0.5f, 1f);
         var doorLabel = WorldText.Create(null, Vector2.zero, "ENTRANCE", 0.28f, new Color(1f, 0.95f, 0.8f), 30);
-        doorLabel.transform.position = doorPosition;
+        doorLabel.transform.position = doorPosition + new Vector2(0f, 0.45f);
 
         // invisible walls
         MakeWall(new Vector2(0f, 4.0f), new Vector2(22f, 1f));
@@ -168,15 +169,15 @@ public class GameBootstrap : MonoBehaviour
         Rack.Init(airDryTime);
 
         // ---- right column ----
-        StainStation = NewStation<HoldWorkStation>("StainRemover", new Vector2(8.9f, 0.9f));
+        StainStation = NewStation<HoldWorkStation>("StainRemover", new Vector2(8.9f, 1.25f));
         StainStation.Setup("Stain Remover", "stainstation", new Vector2(1.4f, 1.4f));
         StainStation.Init(ProcessStep.StainRemoval, stainRemoveTime);
 
-        IronBoard = NewStation<IronStation>("IronBoard", new Vector2(8.7f, -1.2f));
+        IronBoard = NewStation<IronStation>("IronBoard", new Vector2(8.7f, -1.4f));
         IronBoard.Setup("Ironing Board", "iron", new Vector2(1.8f, 1.2f));
         IronBoard.Init();
 
-        FoldTable = NewStation<HoldWorkStation>("FoldTable", new Vector2(8.9f, -3.3f));
+        FoldTable = NewStation<HoldWorkStation>("FoldTable", new Vector2(8.9f, -3.55f));
         FoldTable.Setup("Fold & Pack", "fold", new Vector2(1.4f, 1.4f));
         FoldTable.Init(ProcessStep.Fold, foldTime);
 
@@ -194,7 +195,7 @@ public class GameBootstrap : MonoBehaviour
         t2.Init();
 
         // ---- trash ----
-        var trash = NewStation<TrashStation>("Trash", new Vector2(5.8f, -4.4f));
+        var trash = NewStation<TrashStation>("Trash", new Vector2(5.8f, -3.9f));
         trash.Setup("Trash", "trash", new Vector2(1f, 1.1f));
     }
 }

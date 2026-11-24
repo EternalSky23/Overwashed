@@ -90,6 +90,7 @@ public class DebugTools : MonoBehaviour
 
     public void StartMenuShots()
     {
+        Application.runInBackground = true;
         StartCoroutine(MenuShots());
     }
 
@@ -103,6 +104,7 @@ public class DebugTools : MonoBehaviour
 
     public void StartGameShots(GameBootstrap game)
     {
+        Application.runInBackground = true;
         StartCoroutine(GameShots(game));
     }
 
@@ -135,6 +137,139 @@ public class DebugTools : MonoBehaviour
         var path = Path.Combine(ShotDir, file);
         ScreenCapture.CaptureScreenshot(path);
         Debug.Log("[AUTOSHOT] " + path);
+    }
+
+    // ---------------- Scripted play-through (-playtest) ----------------
+
+    public void StartPlaytest(GameBootstrap game)
+    {
+        Application.runInBackground = true;
+        StartCoroutine(Playtest(game));
+    }
+
+    private IEnumerator Playtest(GameBootstrap g)
+    {
+        int pass = 0, fail = 0;
+        void Check(string name, bool ok)
+        {
+            if (ok) pass++; else fail++;
+            Debug.Log($"[PLAYTEST] {(ok ? "PASS" : "FAIL")} {name}");
+        }
+
+        yield return null;
+        Time.timeScale = 5f;
+        var gm = GameManager.Instance;
+        var om = OrderManager.Instance;
+        var p = PlayerController.Instance;
+        om.AutoSpawn = false;
+        RandomEventManager.Instance.AutoEvents = false;
+        TrashStation trash = null;
+        foreach (var s in g.Stations) if (s is TrashStation t) trash = t;
+
+        IEnumerator WaitUntilDone(Func<bool> cond, float timeout = 30f)
+        {
+            float t = 0f;
+            while (!cond() && t < timeout) { t += Time.deltaTime; yield return null; }
+        }
+
+        // ---- Order 1: T-shirt (clean) : washer -> dryer -> fold -> deliver ----
+        var o1 = om.SpawnOrder(ClothType.TShirt, false, null);
+        var c1 = o1.Cloth;
+        g.Counter.Interact(p);
+        Check("Pick up T-shirt from counter", p.Held == (IHoldable)c1);
+        g.WasherA.Interact(p);
+        yield return WaitUntilDone(() => c1.State == ClothState.Washed);
+        Check("Washer washes T-shirt", c1.State == ClothState.Washed);
+        g.WasherA.Interact(p);
+        g.Dryer.Interact(p);
+        yield return WaitUntilDone(() => c1.State == ClothState.Dried);
+        g.Dryer.Interact(p);
+        Check("Dryer dries T-shirt", c1.State == ClothState.Dried && p.Held == (IHoldable)c1);
+        g.FoldTable.Interact(p);
+        g.FoldTable.WorkPress(p);
+        g.FoldTable.WorkHold(p, 1f);
+        Check("Fold finishes T-shirt", c1.IsFinished);
+        g.FoldTable.Interact(p);
+        int cashBefore = gm.Cash;
+        g.Counter.Interact(p);
+        Check("Deliver T-shirt pays $60", gm.ClothesDelivered == 1 && gm.Cash == cashBefore + 60 && !p.IsHolding);
+
+        // ---- Order 2: stained shirt : stain -> washer -> rack -> iron -> fold ----
+        var o2 = om.SpawnOrder(ClothType.Shirt, true, null);
+        var c2 = o2.Cloth;
+        g.Counter.Interact(p);
+        g.StainStation.Interact(p);
+        g.StainStation.WorkPress(p);
+        g.StainStation.WorkHold(p, 3f);
+        Check("Stain removed", !c2.IsStained && !c2.IsBroken);
+        g.StainStation.Interact(p);
+        g.WasherB.Interact(p);
+        yield return WaitUntilDone(() => c2.State == ClothState.Washed);
+        g.WasherB.Interact(p);
+        g.Rack.Interact(p);
+        yield return WaitUntilDone(() => c2.State == ClothState.Dried);
+        g.Rack.Interact(p);
+        Check("Rack air-dries shirt", c2.State == ClothState.Dried && p.Held == (IHoldable)c2);
+        g.IronBoard.Interact(p);
+        g.IronBoard.WorkPress(p);
+        g.IronBoard.WorkHold(p, 0.5f);
+        g.IronBoard.WorkRelease(p);
+        Check("Iron released too early does nothing", c2.StepIndex == 2 && !c2.IsBroken);
+        g.IronBoard.WorkPress(p);
+        g.IronBoard.WorkHold(p, 1.6f);
+        g.IronBoard.WorkRelease(p);
+        Check("Iron released in green zone works", c2.StepIndex == 3 && !c2.IsBroken);
+        g.IronBoard.Interact(p);
+        g.FoldTable.Interact(p);
+        g.FoldTable.WorkHold(p, 1f);
+        g.FoldTable.Interact(p);
+        g.Counter.Interact(p);
+        Check("Deliver shirt", gm.ClothesDelivered == 2);
+
+        // ---- Order 3: sweater into the dryer -> ruined -> trash ----
+        var o3 = om.SpawnOrder(ClothType.Sweater, false, null);
+        var c3 = o3.Cloth;
+        g.Counter.Interact(p);
+        g.Dryer.Interact(p);
+        yield return WaitUntilDone(() => c3.IsBroken);
+        Check("Sweater ruined in dryer", c3.IsBroken && gm.ClothesRuined == 1 && !om.ActiveOrders.Contains(o3));
+        g.Dryer.Interact(p);
+        trash.Interact(p);
+        yield return null;
+        Check("Trash removes ruined sweater", c3 == null && !p.IsHolding);
+
+        // ---- Overdue: leave a T-shirt in the washer ----
+        var o4 = om.SpawnOrder(ClothType.TShirt, false, g.WasherA);
+        var c4 = o4.Cloth;
+        yield return WaitUntilDone(() => c4.IsBroken, 60f);
+        Check("Cloth left in washer gets ruined", c4.IsBroken);
+        g.WasherA.Interact(p);
+        trash.Interact(p);
+
+        // ---- Kid stains a cloth on a table ----
+        var o5 = om.SpawnOrder(ClothType.Suit, false, null);
+        var kid = RandomEventManager.Instance.SpawnKid();
+        yield return WaitUntilDone(() => o5.Cloth.IsStained, 40f);
+        Check("Kid stains the suit on the counter", o5.Cloth.IsStained && o5.Cloth.StepIndex == 0);
+
+        // ---- Upgrade kit ----
+        var kit = RandomEventManager.Instance.SpawnKit();
+        RandomEventManager.Instance.PickUpKit(kit);
+        p.Hold(kit);
+        g.WasherB.Interact(p);
+        Check("Upgrade kit makes washer 2x", g.WasherB.IsUpgraded && !p.IsHolding);
+
+        // ---- Order expiry ----
+        var o6 = om.SpawnOrder(ClothType.TShirt, false, g.Rack);
+        o6.TimeLeft = 0.1f;
+        yield return null;
+        yield return null;
+        Check("Expired order is counted", gm.OrdersExpired == 1 && o6.Cloth.IsBroken);
+
+        Time.timeScale = 1f;
+        Debug.Log($"[PLAYTEST] DONE pass={pass} fail={fail} cash={gm.Cash} score={gm.Score}");
+        yield return new WaitForSecondsRealtime(0.5f);
+        Application.Quit();
     }
 
     // ---------------- Cheat keys ----------------

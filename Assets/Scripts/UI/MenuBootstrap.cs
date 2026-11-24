@@ -47,6 +47,11 @@ public class MenuBootstrap : MonoBehaviour
         UIFactory.Button(root, "QUIT", new Vector2(200, -420), new Vector2(340, 100), new Color(0.55f, 0.3f, 0.3f), Quit);
 
         if (DebugTools.HasArg("-autoshot")) gameObject.AddComponent<DebugTools>().StartMenuShots();
+        if (DebugTools.HasArg("-playtest"))
+        {
+            Application.runInBackground = true;
+            SceneManager.LoadScene("MainGame");
+        }
     }
 
     private void Update()

@@ -17,9 +17,9 @@ public class IronStation : Station
 
     public void Init()
     {
-        slot = AddSlot(new Vector2(-0.15f, 0.05f), new Vector2(0f, 0.85f), 1.4f);
+        slot = AddSlot(new Vector2(-0.15f, 0.05f), new Vector2(0f, 0.8f), 1.4f);
         slot.Bar.SetZone(zoneMin, zoneMax);
-        hint = WorldText.Create(transform, new Vector2(0f, 1.2f), "", 0.24f, Color.white, 31);
+        hint = WorldText.Create(transform, new Vector2(0f, 1.05f), "", 0.24f, Color.white, 31);
     }
 
     private bool HasValidCloth => !slot.IsEmpty && slot.Cloth != null && !slot.Cloth.IsBroken;
