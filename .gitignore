@@ -112,3 +112,8 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Third-party 3D asset packs (license forbids redistributing the files; repo is public)
+/CubedBear_Laundromat_Business_Set_FREE/
+/PSX_Laundromat_Kit/
+/PSX_Laundromat_Props_FREE/

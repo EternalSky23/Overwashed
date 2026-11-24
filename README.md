@@ -66,6 +66,21 @@ Resources/ -> 其他可能無法分類到上述資料夾的檔案
 
 想換音效：把新檔案用同樣的「遊戲內檔名」放進資料夾即可（mp3 / ogg / wav 都行），不用改程式。
 
+### 第三方美術素材（不在 git 裡，從 DC 拿）
+
+以下兩包像素素材的授權都**禁止再散佈原檔**，所以放在 git-ignore 的資料夾；**沒有這些檔案遊戲照樣能玩**，會自動改用程式產生的替代圖。
+
+| 素材 | 放在哪裡 | 用在哪 |
+|---|---|---|
+| Pixel Townsfolk（by Anemon Creative） | `Assets/ThirdParty/Resources/Art/Townsfolk/`（保留原本的 `sheets/` 子資料夾） | 玩家（預設 Baker）、搗亂小孩（Kid），四方向走路／待機動畫 |
+| Pixel Bathroom & Laundry Icons（by reodesuxz） | `Assets/ThirdParty/Resources/Art/Icons/`（保留原本的 `PNG/32x32/...` 子資料夾） | 洗衣機、烘乾機、燙衣板、垃圾桶 |
+
+- 拿到 DC 上的兩個資料夾後，改名成 `Townsfolk`、`Icons` 放到上表位置即可，Unity 會自動用像素風設定匯入（`Editor/ThirdPartyArtImporter.cs`）。
+- 想換玩家角色：MainGame 場景的 `GameBootstrap` → `Player Character` 填 Townsfolk 的角色名（Waiter、Woman、Teen…）。
+- 想關掉第三方美術：取消勾選 `GameBootstrap` → `Use Third Party Art`。
+- 要換哪些物件用哪張圖示：`Scripts/Visual/ThirdPartyArt.cs` 的 `IconMap`。
+- 另外三包 3D 素材（CubedBear、PSX Laundromat ×2）不適合目前的 2D 俯視風格，沒有使用；已加進 `.gitignore` 避免誤傳。
+
 ### 給組長／組員：相對於 `base-impl` 的變更
 
 以下是 prototype 對組長原本程式或專案設定做的改動，合併前請確認：

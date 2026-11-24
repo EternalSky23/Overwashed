@@ -25,6 +25,8 @@ public class Kid : MonoBehaviour
     private float retargetTimer;
     private SpriteRenderer sr;
     private float anim;
+    private CharacterAnimator animator;
+    private Vector2 lastMove = Vector2.down;
 
     public static Kid FindNear(Vector2 pos, float radius)
     {
@@ -48,6 +50,7 @@ public class Kid : MonoBehaviour
         sr = gameObject.AddComponent<SpriteRenderer>();
         sr.sprite = PixelArt.Get("kid");
         sr.sortingOrder = 11;
+        animator = CharacterAnimator.TryAttach(sr, "Kid", 24f);
         var col = gameObject.AddComponent<CircleCollider2D>();
         col.isTrigger = true;
         col.radius = 0.4f;
@@ -65,7 +68,8 @@ public class Kid : MonoBehaviour
 
         lifeTime += Time.deltaTime;
         anim += Time.deltaTime * 16f;
-        sr.transform.localScale = new Vector3(1f, 1f + Mathf.Abs(Mathf.Sin(anim)) * 0.1f, 1f);
+        if (animator != null) animator.Set(lastMove, true);
+        else sr.transform.localScale = new Vector3(1f, 1f + Mathf.Abs(Mathf.Sin(anim)) * 0.1f, 1f);
 
         if (mode == Mode.Fleeing)
         {
@@ -113,7 +117,8 @@ public class Kid : MonoBehaviour
     {
         Vector2 pos = transform.position;
         Vector2 next = Vector2.MoveTowards(pos, p, s * Time.deltaTime);
-        if (Mathf.Abs(next.x - pos.x) > 0.001f) sr.flipX = next.x < pos.x;
+        if (next != pos) lastMove = next - pos;
+        if (animator == null && Mathf.Abs(next.x - pos.x) > 0.001f) sr.flipX = next.x < pos.x;
         transform.position = next;
     }
 

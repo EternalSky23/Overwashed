@@ -28,6 +28,10 @@ public class PlayerController : MonoBehaviour
     private Station workTarget;
     private bool workByMouse;
     private float walkAnim;
+    private CharacterAnimator anim;
+
+    /// <summary>Townsfolk sheet used for the player when the third-party art is present.</summary>
+    public static string CharacterName = "Baker";
 
     private void Awake()
     {
@@ -35,6 +39,7 @@ public class PlayerController : MonoBehaviour
         sr = gameObject.AddComponent<SpriteRenderer>();
         sr.sprite = PixelArt.Get("player");
         sr.sortingOrder = 10;
+        anim = CharacterAnimator.TryAttach(sr, CharacterName, 24f);
 
         rb = gameObject.AddComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
@@ -71,7 +76,7 @@ public class PlayerController : MonoBehaviour
         if (moveInput.sqrMagnitude > 0.01f)
         {
             facing = moveInput.normalized;
-            if (Mathf.Abs(moveInput.x) > 0.01f) sr.flipX = moveInput.x < 0f;
+            if (anim == null && Mathf.Abs(moveInput.x) > 0.01f) sr.flipX = moveInput.x < 0f;
             walkAnim += Time.deltaTime * 14f;
         }
         else
@@ -79,7 +84,8 @@ public class PlayerController : MonoBehaviour
             walkAnim = 0f;
         }
         // tiny bounce while walking
-        sr.transform.localScale = new Vector3(1f, 1f + Mathf.Abs(Mathf.Sin(walkAnim)) * 0.06f, 1f);
+        if (anim != null) anim.Set(facing, moveInput.sqrMagnitude > 0.01f);
+        else sr.transform.localScale = new Vector3(1f, 1f + Mathf.Abs(Mathf.Sin(walkAnim)) * 0.06f, 1f);
 
         UpdateHand();
         UpdateTarget();

@@ -28,6 +28,8 @@ public static class PixelArt
             var custom = ArtLibrary.Instance.Find(key);
             if (custom != null) return custom;
         }
+        var thirdParty = ThirdPartyArt.TryGetIcon(key); // optional downloaded pixel art
+        if (thirdParty != null) return thirdParty;
         if (cache.TryGetValue(key, out var s) && s != null) return s;
         s = Build(key);
         cache[key] = s;

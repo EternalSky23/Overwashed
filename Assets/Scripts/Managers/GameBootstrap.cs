@@ -16,6 +16,12 @@ public class GameBootstrap : MonoBehaviour
     [SerializeField] private float stainRemoveTime = 2f;
     [SerializeField] private float foldTime = 0.7f;
 
+    [Header("Third-party art (optional, see README)")]
+    [Tooltip("Use downloaded pixel art from Assets/ThirdParty/Resources/Art when it exists.")]
+    [SerializeField] private bool useThirdPartyArt = true;
+    [Tooltip("Townsfolk character used for the player (Baker, Waiter, Woman, Teen, ...).")]
+    [SerializeField] private string playerCharacter = "Baker";
+
     [Header("Tutorial")]
     [Tooltip("Show the tutorial at every round start (otherwise only the first time).")]
     [SerializeField] private bool alwaysShowTutorial = false;
@@ -46,6 +52,8 @@ public class GameBootstrap : MonoBehaviour
             new GameObject("GameManager").AddComponent<GameManager>();
         }
 
+        ThirdPartyArt.Enabled = useThirdPartyArt;
+        PlayerController.CharacterName = playerCharacter;
         SetupCamera();
         SetupLight();
         BuildRoom();
