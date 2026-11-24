@@ -8,6 +8,21 @@ public class GameManager : MonoBehaviour
     public float GameTime = 600f;
     public int Cash = 1000;
     public int Score = 0;
+
+    [Header("Round settings")]
+    [SerializeField]
+    private float roundLength = 600f;
+    [SerializeField]
+    private int startingCash = 1000;
+
+    // Round statistics (shown on the result panel)
+    public int ClothesDelivered = 0;
+    public int ClothesRuined = 0;
+    public int OrdersExpired = 0;
+
+    /// <summary>True while a round is being played (timer counting down).</summary>
+    public bool IsRunning { get; private set; }
+
     // Attribute getting
     public bool IsTimeOver => GameTime <= 0f;
 
@@ -32,16 +47,41 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Reset every value for a new round. Needed because this object survives scene loads.
+    /// </summary>
+    public void ResetGame()
+    {
+        GameTime = roundLength;
+        Cash = startingCash;
+        Score = 0;
+        ClothesDelivered = 0;
+        ClothesRuined = 0;
+        OrdersExpired = 0;
+        IsRunning = true;
+    }
+
+    public void StopGame()
+    {
+        IsRunning = false;
+    }
+
     private void Update()
     {
-        
+
     }
 
     private void FixedUpdate()
     {
+        if (!IsRunning) return;
+
         if (GameTime > 0f)
         {
             GameTime = Mathf.Max(0f, GameTime - Time.fixedDeltaTime);
+        }
+        if (IsTimeOver)
+        {
+            IsRunning = false;
         }
     }
 
@@ -53,13 +93,13 @@ public class GameManager : MonoBehaviour
 
     public void ModifyCash(int value)
     {
-        // Allow negative cash    
+        // Allow negative cash
         Cash += value;
     }
 
     public bool UseCash(int value)
     {
-        // Return true if enough cash, and successfully use cash. 
+        // Return true if enough cash, and successfully use cash.
         // false otherwise.
         if (value < 0 || value > Cash)
         {
