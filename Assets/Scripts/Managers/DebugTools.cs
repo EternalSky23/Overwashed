@@ -123,7 +123,8 @@ public class DebugTools : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         var om = OrderManager.Instance;
-        om.SpawnOrder(ClothType.TShirt, true);
+        om.SpawnOrder(ClothType.TShirt, true, g.StainStation);
+        om.SpawnOrder(ClothType.Shirt, false, g.FoldTable);
         om.SpawnOrder(ClothType.Shirt, false, g.WasherA);
         om.SpawnOrder(ClothType.Sweater, false, g.HandWash);
         om.SpawnOrder(ClothType.Suit, false, g.IronBoard);

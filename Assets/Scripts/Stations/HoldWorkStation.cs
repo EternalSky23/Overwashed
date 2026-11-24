@@ -16,8 +16,8 @@ public class HoldWorkStation : Station
     {
         step = workStep;
         duration = workDuration;
-        slot = AddSlot(new Vector2(0f, 0.05f), new Vector2(0f, 0.95f));
-        hint = WorldText.Create(transform, new Vector2(0f, 1.3f), "", 0.24f, Color.white, 31);
+        slot = AddSlot(new Vector2(0f, 0.05f), new Vector2(0f, 0.85f));
+        hint = WorldText.Create(transform, new Vector2(0f, 1.12f), "", 0.24f, Color.white, 31);
     }
 
     private bool HasValidCloth => !slot.IsEmpty && slot.Cloth != null && !slot.Cloth.IsBroken;

@@ -180,15 +180,15 @@ public class GameBootstrap : MonoBehaviour
         Rack.Init(airDryTime);
 
         // ---- right column ----
-        StainStation = NewStation<HoldWorkStation>("StainRemover", new Vector2(8.9f, 1.25f));
+        StainStation = NewStation<HoldWorkStation>("StainRemover", new Vector2(8.9f, 2.1f));
         StainStation.Setup("Stain Remover", "stainstation", new Vector2(1.4f, 1.4f));
         StainStation.Init(ProcessStep.StainRemoval, stainRemoveTime);
 
-        IronBoard = NewStation<IronStation>("IronBoard", new Vector2(8.7f, -1.4f));
+        IronBoard = NewStation<IronStation>("IronBoard", new Vector2(8.7f, -0.55f));
         IronBoard.Setup("Ironing Board", "iron", new Vector2(1.8f, 1.2f));
         IronBoard.Init();
 
-        FoldTable = NewStation<HoldWorkStation>("FoldTable", new Vector2(8.9f, -3.55f));
+        FoldTable = NewStation<HoldWorkStation>("FoldTable", new Vector2(8.9f, -3.4f));
         FoldTable.Setup("Fold & Pack", "fold", new Vector2(1.4f, 1.4f));
         FoldTable.Init(ProcessStep.Fold, foldTime);
 
