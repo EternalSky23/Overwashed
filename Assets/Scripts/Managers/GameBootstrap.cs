@@ -16,6 +16,10 @@ public class GameBootstrap : MonoBehaviour
     [SerializeField] private float stainRemoveTime = 2f;
     [SerializeField] private float foldTime = 0.7f;
 
+    [Header("Tutorial")]
+    [Tooltip("Show the tutorial at every round start (otherwise only the first time).")]
+    [SerializeField] private bool alwaysShowTutorial = false;
+
     [Header("Layout")]
     [SerializeField] private Vector2 playerStart = new Vector2(0f, -3.5f);
     [SerializeField] private Vector2 doorPosition = new Vector2(-7.2f, -5.3f);
@@ -71,6 +75,13 @@ public class GameBootstrap : MonoBehaviour
         var debug = gameObject.AddComponent<DebugTools>(); // cheat keys F1-F4 in development builds
         if (DebugTools.HasArg("-autoshot")) debug.StartGameShots(this);
         if (DebugTools.HasArg("-playtest")) debug.StartPlaytest(this);
+
+        // 新手教學: show automatically the first time a round is started (time paused until closed)
+        bool automated = DebugTools.HasArg("-autoshot") || DebugTools.HasArg("-playtest");
+        if (!automated && (alwaysShowTutorial || !TutorialPanel.HasBeenSeen))
+        {
+            TutorialPanel.Open(true);
+        }
     }
 
     private void SetupCamera()

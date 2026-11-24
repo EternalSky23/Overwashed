@@ -124,8 +124,10 @@ public class HUD : MonoBehaviour
             new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0, 220), new Vector2(800, 120));
         UIFactory.Label(dim.transform, "Recipes", RecipeText(), 28, Info, TextAnchor.UpperLeft,
             new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0, 40), new Vector2(900, 220));
-        UIFactory.Button(dim.transform, "Resume", new Vector2(-170, -160), new Vector2(300, 80), new Color(0.25f, 0.6f, 0.35f), TogglePause);
-        UIFactory.Button(dim.transform, "Main Menu", new Vector2(170, -160), new Vector2(300, 80), new Color(0.55f, 0.3f, 0.3f), GoToMenu);
+        UIFactory.Button(dim.transform, "Resume", new Vector2(-340, -160), new Vector2(300, 80), new Color(0.25f, 0.6f, 0.35f), TogglePause);
+        // game is already paused here, so the tutorial must not touch the time scale
+        UIFactory.Button(dim.transform, "Tutorial", new Vector2(0, -160), new Vector2(300, 80), new Color(0.3f, 0.45f, 0.7f), () => TutorialPanel.Open(false));
+        UIFactory.Button(dim.transform, "Main Menu", new Vector2(340, -160), new Vector2(300, 80), new Color(0.55f, 0.3f, 0.3f), GoToMenu);
         pausePanel.SetActive(false);
     }
 
@@ -170,7 +172,8 @@ public class HUD : MonoBehaviour
         UpdateCards();
         UpdateToasts();
 
-        if (Input.GetKeyDown(KeyCode.Escape) && !resultShown) TogglePause();
+        // Esc closes the tutorial first (it handles the key itself)
+        if (Input.GetKeyDown(KeyCode.Escape) && !resultShown && !TutorialPanel.IsOpen) TogglePause();
 
         if (gm.IsTimeOver && !resultShown) ShowResult();
     }

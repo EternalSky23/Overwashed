@@ -43,8 +43,9 @@ public class MenuBootstrap : MonoBehaviour
             28, new Color(0.88f, 0.9f, 1f), TextAnchor.UpperCenter,
             new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0, -110), new Vector2(1500, 440));
 
-        UIFactory.Button(root, "START", new Vector2(-200, -420), new Vector2(340, 100), new Color(0.25f, 0.6f, 0.35f), StartGame);
-        UIFactory.Button(root, "QUIT", new Vector2(200, -420), new Vector2(340, 100), new Color(0.55f, 0.3f, 0.3f), Quit);
+        UIFactory.Button(root, "START", new Vector2(-380, -420), new Vector2(320, 100), new Color(0.25f, 0.6f, 0.35f), StartGame);
+        UIFactory.Button(root, "TUTORIAL", new Vector2(0, -420), new Vector2(320, 100), new Color(0.3f, 0.45f, 0.7f), () => TutorialPanel.Open(false));
+        UIFactory.Button(root, "QUIT", new Vector2(380, -420), new Vector2(320, 100), new Color(0.55f, 0.3f, 0.3f), Quit);
 
         if (DebugTools.HasArg("-autoshot")) gameObject.AddComponent<DebugTools>().StartMenuShots();
         if (DebugTools.HasArg("-playtest"))
@@ -56,6 +57,7 @@ public class MenuBootstrap : MonoBehaviour
 
     private void Update()
     {
+        if (TutorialPanel.IsOpen) return; // Enter / Space belong to the tutorial while it is open
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space)) StartGame();
     }
 

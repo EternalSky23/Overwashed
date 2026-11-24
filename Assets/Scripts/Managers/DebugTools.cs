@@ -98,7 +98,19 @@ public class DebugTools : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
         Shot("01_menu.png");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
+        var tut = TutorialPanel.Open(false);
+        yield return new WaitForSeconds(0.3f);
+        Shot("01b_tutorial_p1.png");
+        yield return new WaitForSeconds(0.2f);
+        tut.NextPage();
+        tut.NextPage();
+        tut.NextPage();
+        yield return new WaitForSeconds(0.3f);
+        Shot("01c_tutorial_p4.png");
+        yield return new WaitForSeconds(0.2f);
+        tut.Close();
+        yield return new WaitForSeconds(0.3f);
         SceneManager.LoadScene("MainGame");
     }
 
