@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
     private CharacterAnimator anim;
 
     /// <summary>Townsfolk sheet used for the player when the third-party art is present.</summary>
-    public static string CharacterName = "Teen";
+    public static string CharacterName = "Mailman";
 
     private void Awake()
     {

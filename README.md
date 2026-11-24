@@ -72,7 +72,7 @@ Resources/ -> 其他可能無法分類到上述資料夾的檔案
 
 | 素材 | 放在哪裡 | 用在哪 |
 |---|---|---|
-| Pixel Townsfolk（by Anemon Creative） | `Assets/ThirdParty/Resources/Art/Townsfolk/`（保留原本的 `sheets/` 子資料夾） | 玩家（預設 Teen）、搗亂小孩（Kid），四方向走路／待機動畫 |
+| Pixel Townsfolk（by Anemon Creative） | `Assets/ThirdParty/Resources/Art/Townsfolk/`（保留原本的 `sheets/` 子資料夾） | 玩家（預設 Mailman）、搗亂小孩（Kid），四方向走路／待機動畫 |
 | Pixel Bathroom & Laundry Icons（by reodesuxz） | `Assets/ThirdParty/Resources/Art/Icons/`（保留原本的 `PNG/32x32/...` 子資料夾） | 洗衣機、烘乾機、燙衣板、垃圾桶 |
 
 - 拿到 DC 上的兩個資料夾後，改名成 `Townsfolk`、`Icons` 放到上表位置即可，Unity 會自動用像素風設定匯入（`Editor/ThirdPartyArtImporter.cs`）。
