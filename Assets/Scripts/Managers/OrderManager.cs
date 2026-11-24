@@ -103,6 +103,7 @@ public class OrderManager : MonoBehaviour
         spawnedCount++;
         var station = placeAt != null ? placeAt : counter;
         if (station != null) station.ForcePlace(cloth);
+        AudioManager.Play(AudioManager.Sfx.Order, 0.6f, 1.5f);
         HUD.Toast($"New order: {cloth.DisplayName}{(stained ? " (stained)" : "")}", HUD.Info);
         return order;
     }
@@ -113,6 +114,7 @@ public class OrderManager : MonoBehaviour
         if (order != null && ActiveOrders.Contains(order))
         {
             cloth.Deliver();
+            AudioManager.Play(AudioManager.Sfx.Deliver, 0.9f, 2f);
             ActiveOrders.Remove(order);
             HUD.Toast($"{cloth.DisplayName} delivered! +${cloth.Profit}", HUD.Good);
             FloatingText.Spawn(at + Vector3.up * 0.5f, $"+${cloth.Profit}", HUD.Good);
@@ -134,6 +136,7 @@ public class OrderManager : MonoBehaviour
             if (order != null && order.Expired) gm.OrdersExpired++;
             else gm.ClothesRuined++;
         }
+        AudioManager.Play(AudioManager.Sfx.Ruined, 0.8f, 1.5f);
         HUD.Toast(cloth.BrokenReason + $"  -${cloth.Compensate}", HUD.Bad);
         FloatingText.Spawn(cloth.transform.position + Vector3.up * 0.5f, $"-${cloth.Compensate}", HUD.Bad);
     }

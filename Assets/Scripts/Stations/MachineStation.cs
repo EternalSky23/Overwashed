@@ -50,6 +50,7 @@ public class MachineStation : Station
             Destroy(kit.gameObject);
             speedMultiplier = 2f;
             upgradeMark.SetText("x2");
+            AudioManager.Play(AudioManager.Sfx.Upgrade);
             var bolt = new GameObject("UpgradeBolt").AddComponent<SpriteRenderer>();
             bolt.sprite = PixelArt.Get("bolt");
             bolt.sortingOrder = 31;
@@ -80,6 +81,7 @@ public class MachineStation : Station
 
     protected override void OnPlaced(Slot s)
     {
+        AudioManager.Play(AudioManager.Sfx.MachineStart, 0.6f, 1.5f);
         // the cloth is "inside" the machine: draw it small behind the door glass
         s.Item.transform.localScale = Vector3.one * 0.55f;
         if (s.Cloth != null) s.Cloth.SetSorting(2);
@@ -118,6 +120,7 @@ public class MachineStation : Station
                 slot.Done = true;
                 transform.localPosition = basePos;
                 ApplyStep(cloth);
+                if (cloth != null && !cloth.IsBroken) AudioManager.Play(AudioManager.Sfx.MachineDone, 0.7f, 2.5f);
             }
             return;
         }

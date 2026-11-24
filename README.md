@@ -33,6 +33,39 @@ Resources/ -> 其他可能無法分類到上述資料夾的檔案
 - 測試：執行檔加 `-selftest`（衣物流程）或 `-playtest`（模擬完整遊玩流程），結果寫在 Player.log
 - 新手教學：`Scripts/UI/TutorialPanel.cs`，一頁一頁按 Next 翻（← → / A D / Enter 也可以），主選單 TUTORIAL 按鈕、暫停選單、第一次開局會自動跳出（期間遊戲暫停）。頁面內容在檔案上方的 `Pages` 清單，要改文字或加頁直接改那裡；想每局都顯示可以勾 `GameBootstrap` 的 `Always Show Tutorial`
 
+### 音樂／音效（不在 git 裡，要自己下載）
+
+音效系統在 `Scripts/Managers/AudioManager.cs`。音檔來自 [魔王魂](https://maou.audio/)（BGM）與 [効果音ラボ](https://soundeffect-lab.info/)（音效），兩站都可免費用在遊戲、可剪輯、不需標示出處，**但禁止再散佈原檔**；我們的 repo 是公開的，所以音檔放在 git-ignore 的 `Assets/ThirdParty/Resources/Audio/`，請照下表自己下載（或從 DC 拿打包好的資料夾）。**沒有音檔遊戲也能正常玩，只是沒聲音。**
+
+下載方式：
+1. 用瀏覽器打開下表的頁面，點對應的檔案下載（魔王魂選「ループ版」的 **OGG**）。
+2. Mac：全部下載到「下載項目」後執行 `bash Tools/import_audio.sh`，會自動複製並改名。Windows：手動複製到 `Assets/ThirdParty/Resources/Audio/` 並改成「遊戲內檔名」。
+3. 回到 Unity 讓它匯入即可。遊戲中按 **M** 可靜音。
+
+| 遊戲內檔名 | 用途 | 網站上的名稱 | 頁面 | 原始檔名 |
+|---|---|---|---|---|
+| `bgm_menu.ogg` | 主選單 BGM | アコースティック50「至福の隙間」（ループ版 OGG） | [魔王魂](https://maou.audio/bgm_acoustic50/) | maou_loop_bgm_acoustic50.ogg |
+| `bgm_game.ogg` | 遊戲中 BGM | 8bit29「子猫のもんたのクッキー屋さん」（ループ版 OGG） | [魔王魂](https://maou.audio/bgm_8bit29/) | maou_loop_bgm_8bit29.ogg |
+| `bgm_hurry.ogg` | 最後 30 秒 BGM | ファンタジー15「駆け抜ける戦場の嵐」（ループ版 OGG） | [魔王魂](https://maou.audio/bgm_fantasy15/) | maou_loop_bgm_fantasy15.ogg |
+| `sfx_pickup.mp3` | 拿起衣服 | 洗濯機から服を取り出す | [生活・家電](https://soundeffect-lab.info/sound/various/) | washing-machine-laundry-takeout1.mp3 |
+| `sfx_putdown.mp3` | 放下衣服 | 洗濯機に服を入れる「ボフッ」 | [生活・家電](https://soundeffect-lab.info/sound/various/) | washing-machine-laundry-put1.mp3 |
+| `sfx_machine_start.mp3` | 機器開始 | 洗濯機スイッチオン | [生活・家電](https://soundeffect-lab.info/sound/various/) | washing-machine-switch1.mp3 |
+| `sfx_machine_done.mp3` | 機器完成 | 洗濯機動作終了「ガコンピーッピーッ」 | [生活・家電](https://soundeffect-lab.info/sound/various/) | washing-machine-operation-completed1.mp3 |
+| `sfx_scrub.mp3` | 手洗刷洗 | お風呂でごしごし1 | [生活・家電](https://soundeffect-lab.info/sound/various/) | bath-wash1.mp3 |
+| `sfx_iron.mp3` | 燙衣（暫代） | 電車の圧搾空気排出「プシューッ」 | [機械](https://soundeffect-lab.info/sound/machine/) | train-steam1.mp3 |
+| `sfx_stain.mp3` | 去漬（暫代） | 水をバシャッとかける1 | [生活・家電](https://soundeffect-lab.info/sound/various/) | sprinkle-water1.mp3 |
+| `sfx_fold.mp3` | 摺衣 | 濡れた洗濯物を広げる | [生活・家電](https://soundeffect-lab.info/sound/various/) | laundry-spread1.mp3 |
+| `sfx_order.mp3` | 新訂單 | ドアチャイム1「玄関のピンポン」 | [生活・家電](https://soundeffect-lab.info/sound/various/) | doorchime1.mp3 |
+| `sfx_deliver.mp3` | 交件收錢 | レジスターで精算 | [生活・家電](https://soundeffect-lab.info/sound/various/) | clearing1.mp3 |
+| `sfx_ruined.mp3` | 衣服壞掉 | クイズ不正解1「ブブー」 | [アニメ・ゲーム](https://soundeffect-lab.info/sound/anime/) | incorrect1.mp3 |
+| `sfx_kid.mp3` | 小孩出現 | 盗賊の少年「べ～だ」 | [声素材・ゲーム](https://soundeffect-lab.info/sound/voice/game.html) | thief-boy-guard1.mp3 |
+| `sfx_kit.mp3` | 撿到升級套件 | アイテムを入手1 | [アニメ・ゲーム](https://soundeffect-lab.info/sound/anime/) | item-get1.mp3 |
+| `sfx_upgrade.mp3` | 機器升級 | レベルアップ「テッテレー」 | [アニメ・ゲーム](https://soundeffect-lab.info/sound/anime/) | levelup1.mp3 |
+| `sfx_click.mp3` | 按鈕 | 決定ボタンを押す31「カチッ」 | [ボタン・システム音](https://soundeffect-lab.info/sound/button/) | decision31.mp3 |
+| `sfx_timeup.mp3` | 時間到 | 試合終了のゴング | [アニメ・ゲーム](https://soundeffect-lab.info/sound/anime/) | gong-played2.mp3 |
+
+想換音效：把新檔案用同樣的「遊戲內檔名」放進資料夾即可（mp3 / ogg / wav 都行），不用改程式。
+
 ### 給組長／組員：相對於 `base-impl` 的變更
 
 以下是 prototype 對組長原本程式或專案設定做的改動，合併前請確認：

@@ -14,6 +14,8 @@ public class MenuBootstrap : MonoBehaviour
             cam.backgroundColor = new Color(0.14f, 0.12f, 0.2f);
         }
 
+        AudioManager.PlayBgm(AudioManager.Bgm.Menu);
+
         var canvas = UIFactory.CreateCanvas("Menu Canvas");
         var root = canvas.transform;
         UIFactory.Stretch(root, "Bg", new Color(0.14f, 0.12f, 0.2f), false);

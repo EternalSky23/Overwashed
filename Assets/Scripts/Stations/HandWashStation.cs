@@ -34,6 +34,7 @@ public class HandWashStation : Station
     {
         if (!WantsWork(player)) return;
         slot.Progress += progressPerScrub;
+        AudioManager.Play(AudioManager.Sfx.Scrub, 0.7f, 0.45f, 0.12f);
         FloatingText.Spawn(slot.Anchor.position + (Vector3)Random.insideUnitCircle * 0.3f, "scrub!", new Color(0.6f, 0.85f, 1f), 0.5f);
         slot.Anchor.localPosition = new Vector3(Random.Range(-0.08f, 0.08f), 0.05f + Random.Range(-0.05f, 0.05f), 0f);
         if (slot.Progress >= 1f)

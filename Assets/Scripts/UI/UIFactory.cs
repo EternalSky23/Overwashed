@@ -83,6 +83,7 @@ public static class UIFactory
         colors.highlightedColor = new Color(1.15f, 1.15f, 1.15f);
         colors.pressedColor = new Color(0.8f, 0.8f, 0.8f);
         btn.colors = colors;
+        btn.onClick.AddListener(() => AudioManager.Play(AudioManager.Sfx.Click, 0.7f));
         btn.onClick.AddListener(onClick);
         Label(img.transform, "Text", label, 36, Color.white, TextAnchor.MiddleCenter, Vector2.zero, Vector2.one, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.zero);
         return btn;

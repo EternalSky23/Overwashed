@@ -116,7 +116,7 @@ public class HUD : MonoBehaviour
         var hintBg = UIFactory.Panel(root, "Controls", new Color(0f, 0f, 0f, 0.55f), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0),
             new Vector2(0, 6), new Vector2(1500, 40));
         UIFactory.Label(hintBg.transform, "Text",
-            "Move: WASD / Arrows     Space: Pick up / Put down / Use     E or Left Click: Work (hold / mash)     Esc: Pause",
+            "Move: WASD / Arrows     Space: Pick up / Put down / Use     E or Left Click: Work (hold / mash)     Esc: Pause     M: Mute",
             22, Color.white, TextAnchor.MiddleCenter, Vector2.zero, Vector2.one, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.zero);
 
         BuildPausePanel(root);
@@ -181,6 +181,9 @@ public class HUD : MonoBehaviour
 
         // Esc closes the tutorial first (it handles the key itself)
         if (Input.GetKeyDown(KeyCode.Escape) && !resultShown && !TutorialPanel.IsOpen) TogglePause();
+
+        // last 30 seconds: switch to the hurry-up music
+        if (gm.IsRunning && gm.GameTime <= 30f) AudioManager.PlayBgm(AudioManager.Bgm.Hurry);
 
         if (gm.IsTimeOver && !resultShown) ShowResult();
     }
@@ -277,6 +280,8 @@ public class HUD : MonoBehaviour
     private void ShowResult()
     {
         resultShown = true;
+        AudioManager.StopBgm();
+        AudioManager.Play(AudioManager.Sfx.TimeUp, 1f, 3f);
         var gm = GameManager.Instance;
         gm.StopGame();
         pausePanel.SetActive(false);

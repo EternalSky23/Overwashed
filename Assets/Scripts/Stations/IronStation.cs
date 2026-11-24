@@ -40,6 +40,7 @@ public class IronStation : Station
     {
         if (!WantsWork(player)) return;
         holding = true;
+        AudioManager.Play(AudioManager.Sfx.Iron, 0.5f, 1.5f, 0.05f);
         slot.Progress = 0f;
     }
 

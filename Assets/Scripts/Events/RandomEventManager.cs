@@ -63,6 +63,7 @@ public class RandomEventManager : MonoBehaviour
         go.transform.position = doorPosition + Vector2.down * 0.6f;
         var kid = go.AddComponent<Kid>();
         kid.Init(doorPosition, stations);
+        AudioManager.Play(AudioManager.Sfx.Kid, 0.9f, 2f);
         HUD.Toast("A kid ran into the shop! Shoo them away (Space / click)!", HUD.Warn);
         return kid;
     }

@@ -133,12 +133,14 @@ public class PlayerController : MonoBehaviour
         Held = item;
         item.CurrentStation = null;
         item.AttachTo(hand, 12);
+        AudioManager.Play(item is UpgradeKit ? AudioManager.Sfx.Kit : AudioManager.Sfx.Pickup, 0.8f, 1.2f, 0.08f);
         item.transform.localScale = Vector3.one * 0.75f;
     }
 
     public IHoldable Release()
     {
         var item = Held;
+        if (item != null) AudioManager.Play(AudioManager.Sfx.PutDown, 0.8f, 1.2f, 0.08f);
         Held = null;
         if (item != null) item.transform.localScale = Vector3.one * 0.85f;
         return item;

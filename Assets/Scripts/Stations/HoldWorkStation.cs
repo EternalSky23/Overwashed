@@ -41,6 +41,10 @@ public class HoldWorkStation : Station
 
     public override void WorkPress(PlayerController player)
     {
+        if (WantsWork(player))
+        {
+            AudioManager.Play(step == ProcessStep.StainRemoval ? AudioManager.Sfx.Stain : AudioManager.Sfx.Fold, 0.7f, 1f, 0.05f);
+        }
         if (HasValidCloth && step == ProcessStep.StainRemoval && !slot.Cloth.IsStained)
         {
             HUD.Toast("There is no stain on this one.", HUD.Info);

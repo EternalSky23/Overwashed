@@ -71,6 +71,7 @@ public class GameBootstrap : MonoBehaviour
         if (DebugTools.HasArg("-selftest")) DebugTools.RunSelfTest();
 
         GameManager.Instance.ResetGame();
+        AudioManager.PlayBgm(AudioManager.Bgm.Game);
 
         var debug = gameObject.AddComponent<DebugTools>(); // cheat keys F1-F4 in development builds
         if (DebugTools.HasArg("-autoshot")) debug.StartGameShots(this);
