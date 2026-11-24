@@ -26,6 +26,7 @@ Resources/ -> 其他可能無法分類到上述資料夾的檔案
 
 - 操作：WASD/方向鍵移動、Space 拿起/放下/使用、E 或滑鼠左鍵工作（長按或連點）、Esc 暫停
 - 衣物流程定義在 `Scripts/Cloth/*.cs`（`procedure` 陣列），做錯一步就壞
+- **衣物流程圖**：[`docs/ClothFlow.md`](docs/ClothFlow.md)（每件衣服的步驟、出事時會到哪一步、程式狀態圖）；遊戲內新手教學最後一頁也有同一張圖
 - 美術：目前是 `PixelArt.cs` 程式產生的像素圖；把圖拖進 MainGame 場景 `ArtLibrary` 物件的欄位即可直接替換
 - 選單 `Overwashed > Setup Prototype Scenes / Build Mac / Build Windows`
 - Development build 作弊鍵：F1 生訂單、F2 小孩、F3 升級套件、F4 直接結束回合
