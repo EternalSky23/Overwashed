@@ -242,6 +242,8 @@ MonoBehaviour:
   airDryTime: 10
   stainRemoveTime: 2
   foldTime: 0.7
+  useThirdPartyArt: 1
+  playerCharacter: Baker
   alwaysShowTutorial: 0
   playerStart: {x: 0, y: -3.5}
   doorPosition: {x: -7.2, y: -5.3}
