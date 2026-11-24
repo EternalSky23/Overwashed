@@ -35,11 +35,11 @@ public class TutorialPanel : MonoBehaviour
         new Page
         {
             Title = "Controls",
-            Body = "<b>WASD / Arrow keys</b> : Move\n\n" +
+            Body = "<b>WASD / Arrow keys</b> : Move\n" +
                    "<b>Space</b> : Pick up / Put down / Use the station in front of you\n" +
-                   "      (you can carry <b>one</b> item at a time)\n\n" +
-                   "<b>E</b> or <b>Left Click</b> : Work on a station  (hold or mash)\n" +
-                   "      You can also click a station next to you instead of pressing Space.\n\n" +
+                   "      (you can carry <b>one</b> item at a time)\n" +
+                   "<b>E</b> or <b>Left Click</b> : Work on a station (hold or mash)\n" +
+                   "      Clicking a station next to you also works like Space.\n" +
                    "<b>Esc</b> : Pause",
             Icons = new[] { "player" },
             IconCaptions = new[] { "Walk up to a station" },
@@ -100,8 +100,8 @@ public class TutorialPanel : MonoBehaviour
         new Page
         {
             Title = "Random Events",
-            Body = "<b>Naughty kid</b> : runs in and smears a cloth that is lying around\n" +
-                   "      (counter, tables, rack, work tables). The cloth needs stain removal and starts over!\n" +
+            Body = "<b>Naughty kid</b> : smears a cloth lying around (not inside machines).\n" +
+                   "      That cloth needs stain removal and starts its procedure over!\n" +
                    "      Walk next to the kid and press <b>Space</b> (or click them) to shoo them away.\n\n" +
                    "<b>Upgrade kit</b> : appears on the floor. Pick it up and use it on a machine\n" +
                    "      to make that machine <color=#FFE066><b>2x faster</b></color> for the rest of the day.",
@@ -198,8 +198,13 @@ public class TutorialPanel : MonoBehaviour
         }
 
         bodyText = UIFactory.Label(t, "Body", "", 34, Color.white, TextAnchor.UpperLeft,
-            new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -370), new Vector2(1200, 360));
-        bodyText.lineSpacing = 1.1f;
+            new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -365), new Vector2(1240, 335));
+        bodyText.lineSpacing = 1.05f;
+        // shrink long pages so text never runs under the buttons
+        bodyText.verticalOverflow = VerticalWrapMode.Truncate;
+        bodyText.resizeTextForBestFit = true;
+        bodyText.resizeTextMinSize = 20;
+        bodyText.resizeTextMaxSize = 34;
 
         // navigation
         prevButton = UIFactory.Button(t, "< Prev", new Vector2(-450, -340), new Vector2(240, 80), new Color(0.35f, 0.35f, 0.45f), Prev);
@@ -238,6 +243,7 @@ public class TutorialPanel : MonoBehaviour
     }
 
     public void NextPage() => Next();
+    public int PageCount => Pages.Count;
 
     private void Next()
     {

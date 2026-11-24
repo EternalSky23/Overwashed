@@ -101,14 +101,13 @@ public class DebugTools : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         var tut = TutorialPanel.Open(false);
         yield return new WaitForSeconds(0.3f);
-        Shot("01b_tutorial_p1.png");
-        yield return new WaitForSeconds(0.2f);
-        tut.NextPage();
-        tut.NextPage();
-        tut.NextPage();
-        yield return new WaitForSeconds(0.3f);
-        Shot("01c_tutorial_p4.png");
-        yield return new WaitForSeconds(0.2f);
+        for (int i = 1; i <= tut.PageCount; i++)
+        {
+            Shot($"01_tutorial_p{i}.png");
+            yield return new WaitForSeconds(0.25f);
+            if (i < tut.PageCount) tut.NextPage();
+            yield return new WaitForSeconds(0.25f);
+        }
         tut.Close();
         yield return new WaitForSeconds(0.3f);
         SceneManager.LoadScene("MainGame");
